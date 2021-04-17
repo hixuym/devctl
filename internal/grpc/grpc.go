@@ -1,4 +1,4 @@
-// Package new generates micro service templates
+// Package grpc generates grpc service templates
 package grpc
 
 import (

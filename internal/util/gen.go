@@ -39,7 +39,7 @@ type File struct {
 	Tmpl string
 }
 
-func Write(c Config, file, tmpl string) error {
+func write(c Config, file, tmpl string) error {
 	fn := template.FuncMap{
 		"title": func(s string) string {
 			return strings.ReplaceAll(strings.Title(s), "-", "")
@@ -68,8 +68,8 @@ func Write(c Config, file, tmpl string) error {
 
 func Create(c Config) error {
 	// check if dir exists
-	if _, err := os.Stat(c.Dir); !os.IsNotExist(err) {
-		return fmt.Errorf("%s already exists", c.Dir)
+	if _, err := os.Stat(c.Alias); !os.IsNotExist(err) {
+		return fmt.Errorf("%s already exists", c.Alias)
 	}
 
 	// just wait
@@ -81,7 +81,7 @@ func Create(c Config) error {
 
 	// write the files
 	for _, file := range c.Files {
-		f := filepath.Join(c.Dir, file.Path)
+		f := filepath.Join(c.Alias, file.Path)
 		dir := filepath.Dir(f)
 
 		if _, err := os.Stat(dir); os.IsNotExist(err) {
@@ -90,8 +90,8 @@ func Create(c Config) error {
 			}
 		}
 
-		AddFileToTree(t, file.Path)
-		if err := Write(c, f, file.Tmpl); err != nil {
+		addFileToTree(t, file.Path)
+		if err := write(c, f, file.Tmpl); err != nil {
 			return err
 		}
 	}
@@ -109,7 +109,7 @@ func Create(c Config) error {
 	return nil
 }
 
-func AddFileToTree(root treeprint.Tree, file string) {
+func addFileToTree(root treeprint.Tree, file string) {
 	split := strings.Split(file, "/")
 	curr := root
 	for i := 0; i < len(split)-1; i++ {

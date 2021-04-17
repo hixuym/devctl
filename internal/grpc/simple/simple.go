@@ -27,7 +27,7 @@ func Run(ctx *cli.Context) error {
 	c := util.Config{
 		Alias:    dir,
 		Comments: util.ProtoComments(dir),
-		Dir:      dir,
+		Dir:      "github.com/hixuym/" + dir,
 		Files: []util.File{
 			{Path: "server/main.go", Tmpl: tmpl.MainSRV},
 			{Path: "client/main.go", Tmpl: tmpl.ClientSRV},
